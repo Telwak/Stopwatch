@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+@using System.Web.Optimization;
+@Styles.Render("~/Style/StyleSheet1.css")
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+</head>
+<body>
+    <style>
+       
+    </style>
+    
+    <div>
+        <nav class="controls">
+            <button class="button" id="Start/Stop" onClick="stopwatch.start();">Start</button>
+            <button class="button" id="Restart" onClick="location.reload();">Start</button>
+            <button class="button" id="Lap" onClick="stopwatch.lap();">Lap </button>
+
+        </nav>
+        <div class="stopwatch"></div>
+        <div class="error"></div>
+        <ul class="results"></ul>
+        
+        <table id="Tabela">
+            <tr id="myRow">
+                <th>Time</th>
+            </tr>
+
+        </table>
+        @RenderBody()
+    </div>
+    <script>
+
+    </script>
+</body>
+</html>

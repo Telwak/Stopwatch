@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Home/_Index.cshtml";
+    
+
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <style>
+
+    </style>
+</head>
+<body>
+  <script>
+
+      class Stopwatch {
+          constructor(display, Error, results) {
+              this.running = false;
+              this.display = display;
+              this.results = results;
+              this.laps = [];
+              this.reset();
+              this.resuming = true;
+              this.print(this.times);
+              this.How_Mutch = 0;
+              this.Error = Error;
+
+          }
+
+          restart() {
+              try {
+                  var a;
+                  var elem = document.getElementById('Start/Stop');
+                  elem.parentNode.removeChild(elem);
+                  document.getElementById('Restart').style.display = 'inline';
+              } catch (exception) {
+                  this.pirnt_error(exception);
+              }
+
+          }
+
+
+
+          reset() {
+              this.times = [0, 0, 0];
+
+          }
+
+          start() {
+              try {
+
+
+                  if (this.running) { document.getElementById('Start/Stop').onclick = this.stop() }
+                  if (!this.time) this.time = performance.now();
+                  if (!this.running) {
+                      document.getElementById("Lap").disabled = true;
+
+                      if (this.resuming) {
+                          this.running = true;
+                          document.getElementById('Start/Stop').innerHTML = "Stop";
+                          document.getElementById("Lap").disabled = false;
+                          requestAnimationFrame(this.step.bind(this));
+                      }
+
+                  }
+              }
+              catch (exception) {
+                  this.pirnt_error(exception);
+              }
+          }
+
+          lap() {
+              try {
+
+                  let times = this.times;
+                  this.How_Mutch++;
+                  var table = document.getElementById("Tabela").insertRow(1);
+                  table.id = "tmp" + this.How_Mutch;
+                  var table_row = document.getElementById('Tabela').getElementsByTagName("tr").length;
+                  var row = table.insertCell(0);
+                  var table3 = table_row - 6;
+                  var table_row1 = document.getElementById('tmp' + table3);
+
+                  if (table_row >= 7) {
+
+                      table_row1.deleteCell(0);
+
+                  }
+
+                  row.innerHTML = this.format(times);
+              } catch (exception) {
+                  this.pirnt_error(exception);
+              }
+          }
+
+          stop() {
+              this.running = false;
+              this.time = null;
+              this.resuming = false;
+              this.restart();
+
+          }
+
+
+          step(timestamp) {
+              try {
+                  if (!this.running) return;
+                  this.calculate(timestamp);
+                  this.time = timestamp;
+
+                  this.print();
+                  requestAnimationFrame(this.step.bind(this));
+              } catch (exception) {
+                  this.pirnt_error(exception);
+              }
+          }
+
+          calculate(timestamp) {
+              try {
+                  var diff = timestamp - this.time;
+                  this.times[2] += diff / 10;
+                  if (this.times[2] >= 100) {
+                      this.times[1] += 1;
+                      this.times[2] -= 100;
+                  }
+                  if (this.times[1] >= 60) {
+                      this.times[0] += 1;
+                      this.times[1] -= 60;
+                  }
+              } catch (exception) {
+                  this.pirnt_error(exception);
+              }
+          }
+
+          print() {
+
+              this.display.innerText = this.format(this.times);
+          }
+
+          pirnt_error(Exc) {
+              this.Error.innerHTML = Exc;
+          }
+
+          format(times) {
+              return `\
+
+${pad0(times[0], 2)}:\
+${pad0(times[1], 2)}: \
+${pad0(Math.floor(times[2]), 2)}`;
+          }
+      }
+
+      function pad0(value, count) {
+          var result = value.toString();
+          for (; result.length < count; --count)
+              result = '0' + result;
+          return result;
+      }
+
+      document.getElementById("Lap").disabled = true;
+      document.getElementById('Restart').style.display = 'none';
+
+
+      let stopwatch = new Stopwatch(
+          document.querySelector('.stopwatch'),
+          document.querySelector('.error'),
+          document.querySelector('.results'));
+
+  </script>
+</body>
+</html>
+
+
